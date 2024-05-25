@@ -1,0 +1,102 @@
+---
+import { css } from '../../styled-system/css';
+import '../styles.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+
+interface Props {
+  breadcrumbs: string[];
+  title: string;
+}
+const { breadcrumbs, title } = Astro.props;
+
+const breadcrumbStyle = css({
+  transitionProperty: 'color',
+  transitionTimingFunction: 'in',
+  transitionDuration: 'fast',
+  _hover: {
+    color: 'primary',
+  },
+});
+
+const home = `/${Astro.currentLocale}/`;
+---
+
+<html lang={Astro.currentLocale}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header
+      class={css({
+        height: '12',
+        paddingX: '4',
+        paddingY: '2',
+        backdropFilter: 'auto',
+        backdropBlur: 'sm',
+        position: 'fixed',
+        top: '0',
+        width: 'full',
+        borderBottomColor: 'primary',
+        borderBottomWidth: '1',
+      })}
+    >
+      <nav class={css({ display: 'flex', fontSize: 'xl' })}>
+        <a
+          class:list={[breadcrumbStyle, css({ fontWeight: 'medium' })]}
+          href={home}>zuruh</a
+        >
+        {
+          breadcrumbs.map((breadcrumb, i) => (
+            <>
+              <span>::</span>
+              <a
+                class={breadcrumbStyle}
+                href={
+                  Astro.url.pathname
+                    .split('/')
+                    .filter(Boolean)
+                    .at(i + 1) ?? home
+                }
+              >
+                {breadcrumb}
+              </a>
+            </>
+          ))
+        }
+      </nav>
+
+      {
+        /*
+      <ul>
+        <li>Share button</li>
+        <li>Theme Button</li>
+        <li>Locale Button</li>
+        <li>About me Page</li>
+      </ul>
+      */
+      }
+    </header>
+    <main class={css({ marginTop: '12', padding: '4' })}>
+      <slot />
+    </main>
+    <footer>
+      {
+        /*
+      <ul>
+        <li>Github Profile</li>
+        <li>Github Repo</li>
+        <li>Linkedin profile</li>
+        <li>Twitter profile</li>
+        <li>RSS Button</li>
+      </ul>
+    */
+      }
+    </footer>
+  </body>
+</html>
