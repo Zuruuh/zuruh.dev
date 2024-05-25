@@ -1,0 +1,12 @@
+---
+import { type GetStaticPaths } from 'astro';
+import Layout from '../../../../components/Layout.astro';
+
+export const getStaticPaths = (() => {
+  return [{ params: { lang: 'fr', tag: 'test' } }];
+}) satisfies GetStaticPaths;
+---
+
+<Layout title="test" breadcrumbs={['blog', 'test']}>
+  <h1>Articles par tag</h1>
+</Layout>

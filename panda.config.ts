@@ -14,7 +14,7 @@ export default defineConfig({
       tokens: {
         colors: {
           primary: {
-            value: '#f77533',
+            value: '#f64b00',
           },
         },
         fonts: {
@@ -28,4 +28,5 @@ export default defineConfig({
   strictTokens: true,
   strictPropertyValues: true,
   outdir: 'styled-system',
+  hash: true,
 });

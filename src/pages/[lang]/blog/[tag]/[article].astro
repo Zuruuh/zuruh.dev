@@ -1,0 +1,40 @@
+---
+import { InferGetStaticParamsType, type GetStaticPaths } from 'astro';
+import Layout from '../../../../components/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles');
+
+export const getStaticPaths = (async () => {
+  return (await getCollection('articles')).map((article) => ({
+    params: {
+      lang: article.slug.split('/').at(0),
+      article: article.slug.split('/').at(1),
+      tag: article.data.tag,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const {
+  tag,
+  lang,
+  article: articleSlug,
+} = Astro.params as InferGetStaticParamsType<typeof getStaticPaths>;
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+
+const article = articles.find(
+  (article) => article.slug === `${lang}/${articleSlug}`,
+);
+
+const { Content } = await article.render();
+---
+
+<Layout
+  title="Mon Article"
+  breadcrumbs={['blog', tag, articleSlug.replaceAll('-', '_')]}
+>
+  <article>
+    <Content />
+  </article>
+</Layout>
